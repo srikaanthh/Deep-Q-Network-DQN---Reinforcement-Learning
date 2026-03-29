@@ -1,77 +1,47 @@
-# Solving the bananas environment with Deep Q-Networks
+**DRLND Banana Navigation Project**
 
-Author: srikanth  
-GitHub: https://github.com/srikaanthh
+This experiment was done in the following way:
 
-## Overview
+1. Tried to run a simple agent with a basic configuration possible. 
+2. Try to tune some hyper-parameters to get a better result.
+3. Implement a double-DQN agent.
+4. Compare results over the two experiments
 
-This report describes the implementation of a Basic Deep Q-Network (Basic DQN). The implementation is done in Python using PyTorch.
 
-## Learning algorithm
+    - DQN (vanilla_dqn) 
+    - Double DQN (double_dqn)
 
-The learning algorithm can be divided into two separate parts: the Q-Network itself ([model.py](model.py)) and the agent that uses it ([dqn_agent.py](dqn_agent.py)) along with the policy to update the network.
+### Algorithm's used
 
-### Q-Network architecture ([model.py](model.py))
+The implementation for each algorithm is based on the bellman's equation for updates:
 
-A Q-Network maps states to Q-values for each action. In this case, the architecture followed to solve the environment:
+#### Architecture of the DQN used in the experiment
+ 
+* Fully connected linear neural network with 3 layers of 64 units and RLU activation in the first two layers.
 
-* Input: 37 nodes (`state_size`).
-* Hidden layer 1: 64 nodes by default (`fc1_units`) with a ReLU activation.
-* Hidden layer 2: 64 nodes by default (`fc2_units`) with a ReLU activation.
-* Output layer: 4 nodes as for the number of possible actions (`action_size`).
+#### DQN (vanilla_dqn)
 
-### Agent ([dqn_agent.py](dqn_agent.py))
+![](images/dqn.png)
 
-Since the agent is following a DQN architecture, it has two Q-Networks (`qnetwork_local`and `qnetwork_target`) as in the original implementation. The selected optimizer is Adam.
+#### Double DQN (double_dqn)
 
-The agent has a replay buffer where it stores several experiences to learn from. When the replay buffer is big enough (>`BATCH_SIZE`), the agent performs the learning step, where it:
+![](images/double_dqn.png)
 
-1. Gets the max predicted Q-values for next states from the target model
-2. Computes Q targets for current states
-3. Gets the expected Q-values from the local model
-4. Computes and minimizes the loss 
-5. Updates the target network with a soft update
+### Resume experiment
 
-The way the agent performs an action given an state from the environment depends on the epsilon-greedy algorithm: it would get a random choice when epsilon is big enough, but epsilon gets minimized at each episode so it's more probable that the agent selects a greedy action.
+Both implementation had running in the same environment. Getting the next results: 
 
-### Hyperparameters
+To check the weights of the neural network, you can check it in the folder of `trained_agents` with the name corresponding to the algorithm used.
 
-| Hyperparameter | Value  | Description                                                  |
-| -------------- | ------ | ------------------------------------------------------------ |
-| `BUFFER_SIZE`  | 10000  | Maximum size of the experience replay buffer                 |
-| `BATCH_SIZE`   | 64     | Number of experiences sampled in one batch to learn from     |
-| `GAMMA`        | 0.99   | Discount factor for future rewards                           |
-| `TAU`          | 0.001  | Controls the update of the target Q-Network from the online Q-Network |
-| `LR`           | 0.0005 | Learning rate for the Q-Networks                             |
-| `UPDATE_EVERY` | 4      | How often to update the network                              |
-| `fc1_units`    | 64     | Size of the first hidden layer                               |
-| `fc2_units`    | 64     | Size of the second hidden layer                              |
-| `n_episodes`   | 2000   | Number of episodes                                           |
-| `max_t`        | 1000   | Number of steps per episode                                  |
-| `eps_start`    | 1      | Start value for the epsilon parameter in the epsilon-greedy strategy |
-| `eps_end`      | 0.01   | End value for the epsilon parameter in the epsilon-greedy strategy |
-| `eps_decay`    | 0.995  | Decrease of the epsilon parameter in the epsilon-greedy strategy |
+![](images/comparation.png)
 
-## Results
+An important issue is the application of the same configuration with different algorithms, this can be tuned to improve the performance of each algorithm with specific hyper-parameters for each of one.
 
-The agent was able to learn how to solve the environment. In particular, you can see in the following plot how it could achieve that:
+In the graph, we can see that the double-DQN algorithm is slighter better than the vanilla-DQN algorithm.
+But with more hyper-parameters tuning the algorithm can achieve more stability over time. 
 
-![scores](images/score.png)
+Despite the little difference, both algorithms are capable of achieve the goal of the task, getting to the average score of +13 over 100 consecutive episodes.
 
-The environment is solved when the agent is able to get an average score of +13 over 100 consecutive episodes. In this case, the agent solved the environment after 471 episodes.
-
-## Future work
-
-Since this is just the first version for solving the environment, several actions can be made to improve this project:
-
-1. Fist of all, performing a grid search for the hyperparameters, so the agent is able to solve the environment as fast as possible.
-2. Implement other extensions of Deep Q-Networks. In particular, the idea is to compare different implementations, such as:
-   * N-step DQN.
-   * Double DQN.
-   * Noisy networks.
-   * Prioritized replay buffer.
-   * Dueling DQN.
-   * Categorical DQN.
-   * Rainbow (or combining everything).
-3. Look for other Policy Gradient Algorithms to solve the environment and see performance against DQNs.
-4. Solve the environment taking the images instead of the memory array from the environment so one can compare what is the best approach and the different difficulties that arise with every approach.
+### Improving future results 
+* Try to tune the hyper-parameters to get a better result on each configuration and type of algorithm. 
+* Try to implement a different architecture like rainbow, combining different approaches to get a better convergence.
