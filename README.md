@@ -59,7 +59,7 @@ To set up your python environment to run the code in this repository, follow the
 
 6. Clone the repository (if you haven't already!), and explore the Report.ipynb notebook.  Then, install several dependencies.  
     ```bash
-    git clone https://github.com/alekcei1510/Banana-project-udacity.git
+    git clone https://github.com/srikaanthh/Deep-Q-Network-DQN---Reinforcement-Learning
     ```
 
 7. Before running the code for train the agent or get the analysis, change the kernel to match the `drlnd` environment by using the drop-down `Kernel` menu. 
